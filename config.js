@@ -15,3 +15,7 @@ passport.use(
             try {
                 // Find a channel by email
                 let channel = await Channel.findOne({ email: profile.emails[0].value })
+            }
+            catch {
+                console.log("heeyeyee")
+            }
