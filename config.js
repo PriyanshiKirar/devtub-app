@@ -16,7 +16,15 @@ passport.use(
                 // Find a channel by email
                 let channel = await Channel.findOne({ email: profile.emails[0].value })
             }
-            catch {
-                console.log("heeyeyee ghjkkllhjjjj")
-                
+               // If no channel is found, create a new one
+               if (!channel) {
+
+                // Find handles with the same base name as the email username and if found make it unique
+                const handle = await createUniqueHandle(profile.emails[0].value.split('@')[0])
+                channel = await Channel.create({
+                    name: profile.displayName, // Google profile display name
+                    handle: handle,
+                    email: profile.emails[0].value, // Google profile email
+                    logoURL: profile.photos[0].value.split('=')[0], // Google profile photo URL
+                })
             }
